@@ -29,7 +29,7 @@ class EZList
 
 		//Low index is 0 or 1 based on if this is a tradational index where 0 is the first node or non-traditional where 1 is.
 		bool Traditional = true;
-		int LowIndex = 1;
+		int LowIndex = 0;
 };
 
 template<typename T>
@@ -38,6 +38,11 @@ EZList<T>::EZList()
 	Header = nullptr;
 	Ender = nullptr;
 	Length = 0;
+
+	if (Traditional)
+		LowIndex = 0;
+	else
+		LowIndex = 1;
 }
 
 template<typename T>
@@ -50,6 +55,8 @@ inline EZList<T>::EZList(bool TRADIONAL)
 	Traditional = TRADIONAL;
 	if (Traditional)
 		LowIndex = 0;
+	else
+		LowIndex = 1;
 }
 
 template<typename T>
@@ -58,6 +65,11 @@ EZList<T>::EZList(T NewData)
 	Header = new ListNode<T>(NewData);
 	Ender = Header;
 	Length = 1;
+
+	if (Traditional)
+		LowIndex = 0;
+	else
+		LowIndex = 1;
 }
 
 template<typename T>
@@ -70,6 +82,8 @@ inline EZList<T>::EZList(T NewData, bool TRADIONAL)
 	Traditional = TRADIONAL;
 	if (Traditional)
 		LowIndex = 0;
+	else
+		LowIndex = 1;
 }
 
 template<typename T>
@@ -162,13 +176,14 @@ inline void EZList<T>::Add(T NewData, int Index)
 		return;
 	}
 	
+	//find index location, -1 for the node before wanted index
 	ListNode<T>* Holder = Header;
-	//-1 on index to find the node BEFORE the wanted index.
-	for (size_t i = 1; i < Index-1; i++)
+	for (size_t i = LowIndex; i < Index-1; i++)
 	{
 		Holder = Holder->GetNextNode();
 	}
 
-
-	Length++;
+	NewNode->SetNextNode(Holder->GetNextNode());
+	NewNode->SetPreviousNode(Holder);
+	Holder->SetNextNode(NewNode);
 }
