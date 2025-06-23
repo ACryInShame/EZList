@@ -13,6 +13,12 @@ void PrintTestNT(EZList<int>* TestList);
 void GetTests(EZList<int>* TestList);
 void AddTests(EZList<int>* TestList);
 void AddTestsNT(EZList<int>* TestList);
+void RemoveTest(EZList<int>* TestList);
+void RemoveTestNT(EZList<int>* TestList);
+void ChangeDataTest(EZList<int>* TestList);
+void ChangeDataTestNT(EZList<int>* TestList);
+
+//void DeleteTest(EZList<int>* TestList);
 
 int main()
 {
@@ -35,54 +41,44 @@ int main()
 
 	WaitToClear();
 
-	cout << "===Fill and Print Test [Non-Tradional]===" << endl;
+	cout << "=== Fill and Print Test [Non-Tradional] ===" << endl;
 	FillTestNT(&List2);
 	PrintTestNT(&List2);
 
 	WaitToClear();
-	
-	cout << "Tradional" << endl;
-	GetTests(&List1);
 
-	cout << endl << "non-Tradional" << endl;
+	cout << "=== Get Tests ===" << endl;
+	cout << "Tradional List" << endl;
+	GetTests(&List1);
+	cout << endl;
+	cout << "non-Tradional List" << endl;
 	GetTests(&List2);
 
 	WaitToClear();
-
+	cout << "=== Add Tests ===" << endl;
 	cout << "Tradional" << endl;
 	AddTests(&List1);
 	cout << endl << "non-Tradional" << endl;
 	AddTestsNT(&List2);
 
 	WaitToClear();
+	cout << "=== Remove Test Tradional ===" << endl;
+	RemoveTest(&List1);
+	cout << "=== Remove Test Non-Tradional ===" << endl;
+	RemoveTestNT(&List2);
 
-	/*
-	//add to start of list'
-	cout << "\n";
-	NewList.Add(99, 0);
-	cout << "Length after add is " << NewList.GetLength();
+	WaitToClear();
 
-	//print list
-	for (size_t i = 0; i <= NewList.GetLength()-1; i++)
-	{
-		cout << "\n";
-		cout << NewList[i];
-	}
-	/*
-	cout << "\n";
-	NewList.Add(14,3);
-	cout << NewList[0];
-	cout << "\n";
-	cout << NewList[1];
-	cout << "\n";
-	cout << NewList[2];
-	cout << "\n";
-	cout << NewList[3];
+	cout << "=== Change Data Test Tradional ===" << endl;
+	ChangeDataTest(&List1);
 
-	cout << "\n";
-	cout << "End Test";
-	cout << "\n\n\n\n\n\n";
-	*/
+	WaitToClear();
+
+	cout << "=== Change Data Test Non-Tradional ===" << endl;
+	ChangeDataTestNT(&List2);
+
+
+	WaitToClear();
 	return 0;
 }
 
@@ -116,7 +112,7 @@ void FillTest(EZList<int>* TestList)
 {
 	//Fill List and test length functions [ Tradional list]
 	int length = 5;
-	for (size_t i = 0; i < length; i++)
+	for (int i = 0; i < length; i++)
 	{
 		TestList->Add(i);
 		cout << endl;
@@ -132,7 +128,7 @@ void FillTestNT(EZList<int>* TestList)
 {
 	//Fill List and test length functions [ Tradional list]
 	int length = 5;
-	for (size_t i = 1; i <= length; i++)
+	for (int i = 1; i <= length; i++)
 	{
 		TestList->Add(i);
 		cout << endl;
@@ -147,7 +143,7 @@ void FillTestNT(EZList<int>* TestList)
 void PrintTest(EZList<int>* TestList)
 {
 	//print list
-	for (size_t i = 0; i <= TestList->GetLength()-1; i++)
+	for (int i = 0; i <= TestList->GetLength()-1; i++)
 	{
 		cout << endl;
 		cout << (*TestList)[i];
@@ -158,7 +154,7 @@ void PrintTest(EZList<int>* TestList)
 void PrintTestNT(EZList<int>* TestList)
 {
 	//print list
-	for (size_t i = 1; i <= TestList->GetLength(); i++)
+	for (int i = 1; i < TestList->GetLength(); i++)
 	{
 		cout << endl;
 		cout << (*TestList)[i];
@@ -202,4 +198,60 @@ void AddTestsNT(EZList<int>* TestList)
 	PrintTestNT(TestList);
 	cout << endl;
 	cout << endl;
+}
+
+void RemoveTest(EZList<int>* TestList)
+{
+	cout << "Remove Test: Index 3";
+	cout << endl;
+	cout << "List Before Removal";
+	PrintTest(TestList);
+	int RemovedData = TestList->Remove(3);
+	cout << "Removed " << RemovedData << " From List";
+	cout << endl;
+	cout << "current list";
+	PrintTest(TestList);
+}
+
+void RemoveTestNT(EZList<int>* TestList)
+{
+	cout << "Remove Test: Index 3";
+	cout << endl;
+	cout << "List Before Removal";
+	PrintTestNT(TestList);
+	int RemovedData = TestList->Remove(3);
+	cout << "Removed " << RemovedData << " From List";
+	cout << endl;
+	cout << "current list";
+	PrintTestNT(TestList);
+}
+
+void ChangeDataTest(EZList<int>* TestList)
+{
+	EZList<int>& Ref = *TestList;
+	cout << endl;
+	cout << "before Change";
+	cout << endl;
+	PrintTest(TestList);
+
+	Ref[3] = 55;
+
+	cout << "After Change";
+	cout << endl;
+	PrintTest(TestList);
+}
+
+void ChangeDataTestNT(EZList<int>* TestList)
+{
+	EZList<int>& Ref = *TestList;
+	cout << endl;
+	cout << "before Change";
+	cout << endl;
+	PrintTestNT(TestList);
+
+	Ref[3] = 55;
+
+	cout << "After Change";
+	cout << endl;
+	PrintTestNT(TestList);
 }

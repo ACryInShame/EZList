@@ -9,6 +9,7 @@ class ListNode
 		ListNode(T NewData, ListNode*);
 
 		T GetData();
+		T& GetDataRef();
 		void SetData(T);
 
 		ListNode* GetNextNode();
@@ -47,6 +48,12 @@ ListNode<T>::ListNode(T NewData, ListNode* NewNextNode)
 
 template<typename T>
 T ListNode<T>::GetData()
+{
+	return Data;
+}
+
+template<typename T>
+inline T& ListNode<T>::GetDataRef()
 {
 	return Data;
 }
