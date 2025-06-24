@@ -4,21 +4,15 @@
 
 using namespace std;
 
-void InitTest(EZList<int>* TestList);
 void WaitToClear();
+void InitTest(EZList<int>* TestList);
 void FillTest(EZList<int>* TestList);
-void FillTestNT(EZList<int>* TestList);
 void PrintTest(EZList<int>* TestList);
-void PrintTestNT(EZList<int>* TestList);
 void GetTests(EZList<int>* TestList);
 void AddTests(EZList<int>* TestList);
-void AddTestsNT(EZList<int>* TestList);
 void RemoveTest(EZList<int>* TestList);
-void RemoveTestNT(EZList<int>* TestList);
 void ChangeDataTest(EZList<int>* TestList);
-void ChangeDataTestNT(EZList<int>* TestList);
 
-//void DeleteTest(EZList<int>* TestList);
 
 int main()
 {
@@ -42,8 +36,8 @@ int main()
 	WaitToClear();
 
 	cout << "=== Fill and Print Test [Non-Tradional] ===" << endl;
-	FillTestNT(&List2);
-	PrintTestNT(&List2);
+	FillTest(&List2);
+	PrintTest(&List2);
 
 	WaitToClear();
 
@@ -59,13 +53,13 @@ int main()
 	cout << "Tradional" << endl;
 	AddTests(&List1);
 	cout << endl << "non-Tradional" << endl;
-	AddTestsNT(&List2);
+	AddTests(&List2);
 
 	WaitToClear();
 	cout << "=== Remove Test Tradional ===" << endl;
 	RemoveTest(&List1);
 	cout << "=== Remove Test Non-Tradional ===" << endl;
-	RemoveTestNT(&List2);
+	RemoveTest(&List2);
 
 	WaitToClear();
 
@@ -75,20 +69,23 @@ int main()
 	WaitToClear();
 
 	cout << "=== Change Data Test Non-Tradional ===" << endl;
-	ChangeDataTestNT(&List2);
+	ChangeDataTest(&List2);
 
 
 	WaitToClear();
 	return 0;
 }
 
+void WaitToClear()
+{
+	cout << "Press Enter to continue";
+	cout << endl;
+	cin.ignore();
+	system("cls");
+}
+
 void InitTest(EZList<int>* TestList)
 {
-	/*EZList();
-	EZList(bool TRADIONAL);
-	EZList(T NewData);
-	EZList(T NewData,bool TRADIONAL);*/
-
 	cout << "--Testing Initilization--" << endl ;
 	cout << "Is Tradional? : " << TestList->GetTraditional() << endl;
 	cout << "Has a node? :";
@@ -98,14 +95,6 @@ void InitTest(EZList<int>* TestList)
 		cout << "No" << endl;
 
 	cout << endl << endl;
-}
-
-void WaitToClear()
-{
-	cout << "Press Enter to continue";
-	cout << endl;
-	cin.ignore();
-	system("cls");
 }
 
 void FillTest(EZList<int>* TestList)
@@ -124,37 +113,10 @@ void FillTest(EZList<int>* TestList)
 	cout << endl;
 }
 
-void FillTestNT(EZList<int>* TestList)
-{
-	//Fill List and test length functions [ Tradional list]
-	int length = 5;
-	for (int i = 1; i <= length; i++)
-	{
-		TestList->Add(i);
-		cout << endl;
-		cout << i << " Added to list";
-	}
-	cout << endl;
-	cout << "Length is " << TestList->GetLength();
-	cout << endl;
-	cout << endl;
-}
-
 void PrintTest(EZList<int>* TestList)
 {
 	//print list
-	for (int i = 0; i <= TestList->GetLength()-1; i++)
-	{
-		cout << endl;
-		cout << (*TestList)[i];
-	}
-	cout << endl;
-}
-
-void PrintTestNT(EZList<int>* TestList)
-{
-	//print list
-	for (int i = 1; i < TestList->GetLength(); i++)
+	for (int i = TestList->GetLowIndex(); i <= TestList->GetLowIndex() + TestList->GetLength() - 1; i++)
 	{
 		cout << endl;
 		cout << (*TestList)[i];
@@ -186,20 +148,6 @@ void AddTests(EZList<int>* TestList)
 	cout << endl;
 }
 
-void AddTestsNT(EZList<int>* TestList)
-{
-	TestList->Add(99);
-	cout << "Test Add : ";
-	PrintTestNT(TestList);
-	cout << endl;
-	cout << endl;
-	TestList->Add(88,3);
-	cout << "Test Add [index(3)] :";
-	PrintTestNT(TestList);
-	cout << endl;
-	cout << endl;
-}
-
 void RemoveTest(EZList<int>* TestList)
 {
 	cout << "Remove Test: Index 3";
@@ -211,19 +159,6 @@ void RemoveTest(EZList<int>* TestList)
 	cout << endl;
 	cout << "current list";
 	PrintTest(TestList);
-}
-
-void RemoveTestNT(EZList<int>* TestList)
-{
-	cout << "Remove Test: Index 3";
-	cout << endl;
-	cout << "List Before Removal";
-	PrintTestNT(TestList);
-	int RemovedData = TestList->Remove(3);
-	cout << "Removed " << RemovedData << " From List";
-	cout << endl;
-	cout << "current list";
-	PrintTestNT(TestList);
 }
 
 void ChangeDataTest(EZList<int>* TestList)
@@ -239,19 +174,4 @@ void ChangeDataTest(EZList<int>* TestList)
 	cout << "After Change";
 	cout << endl;
 	PrintTest(TestList);
-}
-
-void ChangeDataTestNT(EZList<int>* TestList)
-{
-	EZList<int>& Ref = *TestList;
-	cout << endl;
-	cout << "before Change";
-	cout << endl;
-	PrintTestNT(TestList);
-
-	Ref[3] = 55;
-
-	cout << "After Change";
-	cout << endl;
-	PrintTestNT(TestList);
 }

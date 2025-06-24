@@ -1,6 +1,7 @@
 #pragma once
 #include "ListNode.hpp"
 #include <cassert>
+#include <unordered_set>
 
 template <typename T>
 class EZList
@@ -13,8 +14,8 @@ class EZList
 		~EZList();
 
 		//Get Functions
-		const T& operator[] (int) const;
-		int GetLength();
+		int GetLength() { return Length; };
+		int GetLowIndex() { return LowIndex; };
 		ListNode<T>* GetLastNode();
 		bool GetTraditional();
 
@@ -31,12 +32,13 @@ class EZList
 		bool IsEmpty();
 
 		//Operations
+		const T& operator[] (int) const;
 		T& operator[] (int);
 		void Swap(int Index1, int Index2);
+		void MakeUnique();
 
 
 		//Todo
-		// swap two elements
 		// Sort
 		// Merge (already sorted lists)
 		// splice "Transfers elements from x into the container, inserting them at position."
@@ -196,9 +198,14 @@ inline void EZList<T>::Swap(int Index1, int Index2)
 }
 
 template<typename T>
-inline int EZList<T>::GetLength()
+inline void EZList<T>::MakeUnique()
 {
-	return Length;
+	// hash set to stor each seen value to check against
+	std::unordered_set<T> SeenValues;
+	SeenValues.insert();
+	SeenValues.find();
+
+
 }
 
 template<typename T>
