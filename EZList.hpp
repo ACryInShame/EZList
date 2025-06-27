@@ -200,12 +200,41 @@ inline void EZList<T>::Swap(int Index1, int Index2)
 template<typename T>
 inline void EZList<T>::MakeUnique()
 {
-	// hash set to stor each seen value to check against
-	std::unordered_set<T> SeenValues;
-	SeenValues.insert();
-	SeenValues.find();
+
+	//check if header is valid
+	if (!Header)
+		throw std::runtime_error("Unable to run MakeUnique: Header node pointer null");
 
 
+	/*// Initialize the list and unordered set.
+	ListNode<T>* CurrentNode = Header; //create pointer and set to begining of list
+
+	SeenValues.insert(CurrentNode.GetData()); // add first entry into set*/
+
+
+	//==============================
+	int Index = 0 + LowIndex;
+	std::unordered_set<T> SeenValues; // hash set to store each seen value to check against
+
+
+	// while the next node is not nullpointer, check if the node data is already in the data set, if so remove the node and continue on
+	while (Index <= Length)
+	{
+		T& IndexValue = operator[](Index);
+
+		if (SeenValues.count(IndexValue) == 0)
+		{
+			//Didnt find in list
+			SeenValues.insert(IndexValue);
+			Index++;
+			continue;
+		}
+
+		//Did find in list
+		this->Remove(Index);
+		if (this->GetNodeAtIndex(Index) == nullptr) //if true then there is no other nodes or the list is currupted.
+			return;
+	}
 }
 
 template<typename T>

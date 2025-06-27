@@ -12,6 +12,7 @@ void GetTests(EZList<int>* TestList);
 void AddTests(EZList<int>* TestList);
 void RemoveTest(EZList<int>* TestList);
 void ChangeDataTest(EZList<int>* TestList);
+void MakeUniqueTest(EZList<int>* TestList);
 
 
 int main()
@@ -70,6 +71,11 @@ int main()
 
 	cout << "=== Change Data Test Non-Tradional ===" << endl;
 	ChangeDataTest(&List2);
+
+	WaitToClear();
+
+	cout << "=== MakeUniqueTest  ===";
+	MakeUniqueTest(&List1);
 
 
 	WaitToClear();
@@ -175,3 +181,20 @@ void ChangeDataTest(EZList<int>* TestList)
 	cout << endl;
 	PrintTest(TestList);
 }
+
+void MakeUniqueTest(EZList<int>* TestList)
+{
+	TestList->Clear();
+	for (int i = 0; i < 5; i++)
+	{
+		for (int i = 0 ; i <5; i++)
+			TestList->Add(i);
+	}
+	cout << "before run";
+	PrintTest(TestList);
+
+	cout << "After Run";
+	TestList->MakeUnique();
+	PrintTest(TestList);
+}
+
