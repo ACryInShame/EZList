@@ -88,6 +88,7 @@ void WaitToClear()
 	cout << endl;
 	cin.ignore();
 	system("cls");
+	system("clear");
 }
 
 void InitTest(EZList<int>* TestList)
@@ -122,10 +123,10 @@ void FillTest(EZList<int>* TestList)
 void PrintTest(EZList<int>* TestList)
 {
 	//print list
+	cout << endl;
 	for (int i = TestList->GetLowIndex(); i <= TestList->GetLowIndex() + TestList->GetLength() - 1; i++)
 	{
-		cout << endl;
-		cout << (*TestList)[i];
+		cout << (*TestList)[i] << " ";
 	}
 	cout << endl;
 }
@@ -190,8 +191,13 @@ void MakeUniqueTest(EZList<int>* TestList)
 		for (int i = 0 ; i <5; i++)
 			TestList->Add(i);
 	}
-	cout << "before run";
+	cout << endl;
+	cout << "before run Print ";
+	cout << endl;
 	PrintTest(TestList);
+	cout << endl;
+	cout << "-------------";
+	cout << endl;
 
 	cout << "After Run";
 	TestList->MakeUnique();

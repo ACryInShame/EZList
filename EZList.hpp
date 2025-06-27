@@ -1,7 +1,9 @@
 #pragma once
 #include "ListNode.hpp"
+#include <stdexcept>
 #include <cassert>
 #include <unordered_set>
+#include <iostream>
 
 template <typename T>
 class EZList
@@ -25,6 +27,7 @@ class EZList
 
 		//Remove Functions
 		T Remove(int);
+		T Remove(ListNode<T>*);
 		void Delete(int);
 		void Clear();
 
@@ -200,40 +203,36 @@ inline void EZList<T>::Swap(int Index1, int Index2)
 template<typename T>
 inline void EZList<T>::MakeUnique()
 {
-
-	//check if header is valid
-	if (!Header)
-		throw std::runtime_error("Unable to run MakeUnique: Header node pointer null");
+	//check if header is valid. if not return as the list is empty and thus Unique
+	if (!Header) {return;}
 
 
-	/*// Initialize the list and unordered set.
-	ListNode<T>* CurrentNode = Header; //create pointer and set to begining of list
-
-	SeenValues.insert(CurrentNode.GetData()); // add first entry into set*/
-
-
-	//==============================
-	int Index = 0 + LowIndex;
+	ListNode<T>* CurrentNode = Header;
 	std::unordered_set<T> SeenValues; // hash set to store each seen value to check against
+	T CurrentData ; // used to hold the current data to reduce GetData(); calls
 
-
-	// while the next node is not nullpointer, check if the node data is already in the data set, if so remove the node and continue on
-	while (Index <= Length)
+	// while the next node is not nullpointer, 
+	// check if the node data is already in the data set, 
+	// if so remove the node
+	while (CurrentNode != nullptr)
 	{
-		T& IndexValue = operator[](Index);
-
-		if (SeenValues.count(IndexValue) == 0)
+		CurrentData = CurrentNode->GetData();
+		
+		if (SeenValues.count(CurrentData) == 0)
 		{
-			//Didnt find in list
-			SeenValues.insert(IndexValue);
-			Index++;
-			continue;
+			//Data not found, Unique data
+			SeenValues.insert(CurrentData);
+			
+			// Check next node
+			CurrentNode = CurrentNode->GetNextNode();
 		}
+		else
+		{ //Found in Set, remove node
+			ListNode<T>* NextNode = CurrentNode->GetNextNode();
 
-		//Did find in list
-		this->Remove(Index);
-		if (this->GetNodeAtIndex(Index) == nullptr) //if true then there is no other nodes or the list is currupted.
-			return;
+			Remove(CurrentNode);
+			CurrentNode = NextNode;
+		}
 	}
 }
 
@@ -263,6 +262,7 @@ inline void EZList<T>::Add(T NewData)
 		ListNode<T>* Holder = Footer;
 		Footer = new ListNode<T>(NewData);
 		Holder->SetNextNode(Footer);
+		Footer->SetPreviousNode(Holder);
 	}
 
 	Length++;
@@ -306,14 +306,27 @@ inline void EZList<T>::Add(T NewData, int Index)
 template<typename T>
 inline T EZList<T>::Remove(int Index)
 {
-	ListNode<T>* Holder = GetNodeAtIndex(Index);
+	T Data = Remove( GetNodeAtIndex(Index) ); //index is checked for type in GetNodeIndex()
+	return Data;
+}
+
+template<typename T>
+inline T EZList<T>::Remove(ListNode<T>* Holder)
+{
 	T Data = Holder->GetData();
 
 	ListNode<T>* PreviousNode = Holder->GetPreviousNode();
 	ListNode<T>* NextNode = Holder->GetNextNode();
 
-	PreviousNode->SetNextNode(NextNode);
-	NextNode->SetPreviousNode(PreviousNode);
+	if (PreviousNode != nullptr)
+		PreviousNode->SetNextNode(NextNode);
+	else
+		Header = NextNode;
+
+	if (NextNode != nullptr)
+		NextNode->SetPreviousNode(PreviousNode);
+	else
+		Footer = PreviousNode;
 
 	delete Holder;
 	Length--;
@@ -325,7 +338,8 @@ inline void EZList<T>::Delete(int Index)
 {
 	if (Index < LowIndex || Index > Length-LowIndex)
 		throw std::runtime_error("Deleted index outside of EZList");
-	ListNode<T>* Holder GetNodeAtIndex(Index);
+
+	ListNode<T>* Holder = GetNodeAtIndex(Index);
 	Holder->GetPreviousNode()->SetNextNode(
 		Holder->GetNextNode()
 		);
